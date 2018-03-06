@@ -17,12 +17,12 @@ if (isset($_COOKIE['id']) or (isset($_SESSION['id']) and (($_SESSION['tipoUsuari
     <link rel="shortcut icon" type="image/png" href="../img/favicon.ico"/>
 	<title>Bachometro &copy; Municipio de Othón P. Blanco &mdash; 2018</title>
   <!-- Bootstrap core CSS-->
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css"/>
   <!-- Custom fonts for this template-->
-  <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="../css/font-awesome.css"/>
   <!-- Custom styles for this template-->
-  <link href="../css/sb-admin.css" rel="stylesheet"/>
-  <link href="../css/Lobibox/lobibox.css" rel="stylesheet"/>
+  <link rel="stylesheet" type="text/css" href="../css/sb-admin.css"/>
+  <link rel="stylesheet" type="text/css" href="../css/Lobibox/lobibox.css"/>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -94,15 +94,6 @@ if (isset($_COOKIE['id']) or (isset($_SESSION['id']) and (($_SESSION['tipoUsuari
           <a href="index.php">Inicio</a>
         </li>
         <li class="breadcrumb-item active">Mapa</li>
-		
-		  <!-- <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-		    <div class="btn-group mr-2" role="group" aria-label="First group">
-		      <button type="button" class="btn btn-secondary" aria-hidden="true"><i class="fa fa-map-marker"></i></button>
-		      <button type="button" class="btn btn-light" aria-hidden="true"><i class="fa fa-refresh"></i></button>
-		      <button type="button" class="btn btn-danger" aria-hidden="true"><i class=" fa fa-trash-o"></i></button>
-		    </div>
-		  </div>
-			-->
       </ol>
       <!-- Icon Cards-->
     </div>
@@ -143,13 +134,12 @@ if (isset($_COOKIE['id']) or (isset($_SESSION['id']) and (($_SESSION['tipoUsuari
     </div>
   </div>
     <!-- Bootstrap core JavaScript-->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/jquery-3.1.1.js"></script>
+    <script src="../js/bootstrap.bundle.js"></script>
     <!-- Core plugin JavaScript-->
-    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../js/jquery.easing.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin.min.js"></script>
-	  <script src="../js/compartidos.js"></script>
+    <script src="../js/sb-admin.js"></script>
     <script src="../js/googleMapsClusterer.js"></script>
     <script src="../js/GoogleMaps/markerclusterer.js"></script>
 	  <script src="../js/skinGoogleMaps.js"></script>
