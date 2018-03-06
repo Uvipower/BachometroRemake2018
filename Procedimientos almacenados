@@ -1,0 +1,122 @@
+DROP PROCEDURE IF EXISTS login;
+DELIMITER $$
+CREATE PROCEDURE login(
+    IN _usuario VARCHAR(50),
+    IN _contrasena VARCHAR(50))
+BEGIN
+    SELECT Id_usuario, Tipo_usuario FROM Usuarios WHERE Usuario = _usuario AND Contrasena = _contrasena;
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS registroInformacionUsuario;
+DELIMITER $$
+CREATE PROCEDURE registroInformacionUsuario(
+    IN _apellido_paterno VARCHAR(50),
+    IN _apellido_materno VARCHAR(50),
+    IN _nombres VARCHAR(50))
+BEGIN
+    INSERT INTO Usuario_datos (Apellido_paterno, Apellido_materno, Nombres) 
+	VALUES (_apellido_paterno, _apellido_materno, _nombres);
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS registroUsuario;
+DELIMITER $$
+CREATE PROCEDURE registroUsuario(
+    IN _usuario VARCHAR(50),
+    IN _password VARCHAR(50),
+    IN _correo VARCHAR(50),
+    IN _Id_usuario_datos INT)
+BEGIN
+    INSERT INTO Usuarios (Usuario, Contrasena, Correo, Tipo_usuario, Id_usuario_datos) 
+	VALUES (_usuario, _password, _correo, 2, _Id_usuario_datos);
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS registroBache;
+DELIMITER $$
+CREATE PROCEDURE registroBache(
+    IN _fechaHoraServidor VARCHAR(50),
+    IN _latitud VARCHAR(45),
+    IN _longitud VARCHAR(45),
+    IN _referencia VARCHAR(100),
+    IN _comentario VARCHAR(45),
+    IN _imagen VARCHAR(45),
+    IN _id_usuario INT)
+BEGIN
+    INSERT INTO Reportes (Fecha, Latitud, Longitud, Referencia, Comentario, Imagen, Id_usuario) 
+VALUES (_fechaHoraServidor, _latitud, _longitud, _referencia, _comentario, _imagen, _id_usuario);
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS registroBacheHistorial;
+DELIMITER $$
+CREATE PROCEDURE registroBacheHistorial(
+    IN _fecha VARCHAR(50),
+    IN _id_reporte INT)
+BEGIN
+    INSERT INTO Reporte_historial (Fecha, Id_reporte) 
+VALUES (_fecha, _id_reporte);
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS informacionUsuario;
+DELIMITER $$
+CREATE PROCEDURE informacionUsuario(
+    IN _id_usuario INT)
+BEGIN
+    SELECT Usuario_datos.Apellido_materno, Usuario_datos.Apellido_paterno, Usuario_datos.Nombres, Usuarios.Correo FROM Usuario_datos INNER JOIN Usuarios ON Usuarios.Id_usuario_datos=Usuario_datos.Id_usuario_datos WHERE Usuarios.Id_usuario=_Id_usuario;
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS consultarReportes;
+DELIMITER $$
+CREATE PROCEDURE consultarReportes(
+    IN _id_usuario INT)
+BEGIN
+    SELECT id_reporte, fecha, latitud, longitud, referencia, imagen FROM Reportes WHERE Id_usuario=_id_usuario ORDER BY id_reporte DESC;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS consultarReporteDetalles;
+DELIMITER $$
+CREATE PROCEDURE consultarReporteDetalles(
+    IN _id_reporte INT)
+BEGIN
+    SELECT id_reporte_historial, fecha, descripcion, estatus FROM Reporte_historial WHERE Id_reporte=_id_reporte ORDER BY id_reporte_historial DESC;
+END $$
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS modificarInformacionUsuario;
+DELIMITER $$
+CREATE PROCEDURE modificarInformacionUsuario(
+    IN _apellido_paterno VARCHAR(50),
+    IN _apellido_materno VARCHAR(50),
+    IN _nombres VARCHAR (50),
+    IN _id_usuario INT)
+BEGIN
+    UPDATE Usuario_datos SET Apellido_paterno=_apellido_paterno, Apellido_materno=_apellido_materno, Nombres=_nombres WHERE Id_usuario=_id_usuario;
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS modificarUsuario;
+DELIMITER $$
+CREATE PROCEDURE modificarUsuario(
+    IN _anterior_password VARCHAR(255),
+    IN _nueva_password VARCHAR(255),
+    IN _correo VARCHAR(50),
+    IN _id_usuario INT)
+BEGIN
+DECLARE _contrasena_iguales INTEGER;
+		SELECT count(Contrasena) INTO _contrasena_iguales 
+		FROM Usuarios 
+		WHERE Id_usuario = _id_usuario AND Contrasena =_anterior_password;
+	IF (_contrasena_iguales > 0) THEN
+		UPDATE Usuarios 
+		SET Contrasena =_nueva_contrasena
+		WHERE Id_usuario = _id_usuario;
+	END IF;
+END $$
+DELIMITER ;
+DROP PROCEDURE IF EXISTS eliminarReporte;
+DELIMITER $$
+CREATE PROCEDURE eliminarReporte (
+    IN _id_reporte INT,
+    IN _id_usuario INT)
+BEGIN
+    DELETE FROM Reportes WHERE Id_reporte=_id_reporte AND Id_usuario=_id_usuario;
+END $$
+DELIMITER ;
