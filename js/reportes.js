@@ -30,7 +30,8 @@ $('#reportes tbody').on( 'click', 'tr', function () {
 	$(this).toggleClass('active');
 });
 
-
+//funcion que se ejecuta al iniciar la carga de la pagina
+//consulta los registros del reporte
 function consultarBaches(){
 	"use strict";
 	$.ajax({
@@ -43,7 +44,7 @@ function consultarBaches(){
 	})
 	.done(function(response){
 		$.each(response.reportes, function (index, value) {
-			//console.log(value.fecha);
+			//creacion de la fila
 			var fila = "";
 			fila += "<tr>";
 			fila += "<th scope='row'>"+value.Id_reporte+"</td>";
@@ -53,10 +54,11 @@ function consultarBaches(){
 			fila += "<td>"+value.Estatus+"</td>";
 			fila += "<td>"+value.Fecha2+"</td>";
 			fila += "</tr>";
-			
+			//agregar la fila a la tabla
 			$("#reportes").append(fila);			
 		});
 		reportes = $('#reportes').DataTable({
+			//estructura de los elementos de datatables
 			dom: "<'card-body pl-0 pr-0 pt-0'<'row align-items-center'<'col-12 col-md-12'B>>>" +
 		            "<'row'<'col-12'tr>>" +
 		            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -67,12 +69,15 @@ function consultarBaches(){
         	//scroller:       true,
 			order : [0, 'desc'],
 			//ordering: [[ 1, 'desc' ]],
+			//cambiar el numero de registros que se visualizara
 			lengthChange: true,
+			//numero de registros para ver en la tabla
 			lengthMenu: [
 				[ 10, 25, 50, -1 ],
 				[ '10', '25', '50', 'Todos' ]
 			],
 			pagingType: "simple_numbers",
+			//cambiar el idioma de ingles a español
 			language: {
                	url: "../js/DataTables/Spanish.json",
 				buttons: {
@@ -82,14 +87,16 @@ function consultarBaches(){
 					}
 				}
            	},
-			
+			//buttones
 		    buttons: [
 				{
+					//boton de coleccion, boton de exportar en diferentes formatos
 					extend: 'collection',
 					text: '<i class="fa fa-file-o"></i>',
 					autoClose: true,
 					buttons: [
 						{
+							//exportar a csv
 							extend: 'csvHtml5',
 							text: '<i class="fa fa-file-text-o"></i> CSV',
 							titleAttr: 'CSV',
@@ -98,19 +105,23 @@ function consultarBaches(){
 							}
 						}, 
 						{
+							//exportar a excel
 							extend: 'excelHtml5',
 							text: '<i class="fa fa-file-excel-o"></i> Excel',
 							titleAttr: 'Excel',
+							//columnas visibles
 							exportOptions: {
 								columns: ':visible'
 							}
 						}, 
 						{
+							//exportar a pdf
 							extend: 'pdfHtml5',
 							text: '<i class="fa fa-file-pdf-o"></i> PDF',
 							titleAttr: 'PDF',
 							footer: true,
 							download: 'open',
+							//columnas visibles
 							exportOptions: {
 								columns: ':visible'
 							}
@@ -118,10 +129,12 @@ function consultarBaches(){
 					]
 				},
 				{
+					//boton de coleccion, botones de imprimir
 					extend: 'collection',
 					text: '<i class="fa fa-print"></i>',
 					autoClose: true,
 					buttons: [{
+						//imprimir
 						extend: 'print',
 						text: 'Imprimir todo',
 						footer: true,
@@ -138,11 +151,13 @@ function consultarBaches(){
 							});
 							$(win.document.body).find('h1').css('text-align','center');
 						},
+						//columnas visibles
 						exportOptions: {
 							columns: ':visible'
 						}
 					}, 
 					{
+						//imprimir
 						extend: 'print',
 						text: 'Imprimir filas seleccionadas',
 						footer: true,
@@ -159,6 +174,7 @@ function consultarBaches(){
 								});
 								$(win.document.body).find('h1').css('text-align','center');
 						},
+						//columnas visibles
 						exportOptions: {
 							columns: ':visible',
 							modifier: {
@@ -168,20 +184,26 @@ function consultarBaches(){
 					}]
 				},
 				{
+					//ocultar y desocultar columnas
 					extend: 'colvis',
 					text: '<i class="fa fa-columns"></i>',
 					autoClose: false
 				},
 				{
+					//restaurar columnas ocultas, regresa al estado original de la tabla
 					extend: 'colvisRestore',
 					text:'<i class="fa fa-refresh"></i>'
 				},
 				{
+					//numeros de registros que se podrán ver
 					extend: 'pageLength',
 					text: '<i class="fa fa-hashtag"></i>',
 					autoClose: false
 				},
+				//los siguientes botones solo aparecen cuando 
+				//se selecciona uno o unos registros
 				{
+					//boton de ver detalles
 		            text: "<i class='fa fa-eye' aria-hidden='true'></i>",
 		            tittleAttr: 'Ver detalles',
 		            // .ml-2 and .rounded-left to make a flawless space between this first button and the fixed ones 
@@ -195,6 +217,7 @@ function consultarBaches(){
 		            }
 		        },                
 		        {
+		        	//boton de registrar avance de estatus
 		            text: "<i class='fa fa-check-square' aria-hidden='true'></i>",
 		            tittleAttr: 'Registrar modificación de estatus',
 		            className: 'btn-req-selection invisible btn-info', // Basic classes for selection control and invisibility
@@ -209,6 +232,7 @@ function consultarBaches(){
 		            }
 		        },
 		        {
+		        	//boton de eliminar reporte
 		            text: "<i class='fa fa-trash' aria-hidden='true'></i>",
 		            tittleAttr: 'Eliminar reporte (s)',
 		            className: 'btn-req-selection invisible btn-danger', // Bootstrap's btn-danger for delete
@@ -224,17 +248,19 @@ function consultarBaches(){
 		        }
 					  
 			],
-
+			//agrupar por filas
 			rowGroup: {
 		        enable: false
 		    },
+		    //seleccionar una fila
 			select: {
 				style:    'os',
         		blurable: true
 			},
+			//reponsivo
 			responsive: true
-			});
-		
+		});
+		//ordenamiento
 		reportes.on( 'rowgroup-datasrc', function ( e, dt, val ) {
 			reportes.order.fixed( {pre: [[ val, 'asc' ]]} ).draw();
 		});
@@ -270,7 +296,7 @@ function consultarBaches(){
 		console.log("fail " + response);
 	});
 }
-
+//inputs de fecha
 $("#fecha").datepicker({
 	format: "yyyy-mm-dd",
 	leftArrow: '<i class="fa fa-long-arrow-left"></i>',
@@ -328,7 +354,7 @@ $('#modalDetalles').on('shown.bs.modal', function() {
 	comentarioReporte();
 });
 
-
+//cargar el mapa del reporte
 function cargarMapa(){
 	"use strict";
 	//ajax
@@ -412,7 +438,7 @@ function cargarMapa(){
 		}
 	});
 }
-
+//consultar avance del reporte (historial)
 function historialReporte(){
 	"use strict";
 	$.ajax({
@@ -426,24 +452,23 @@ function historialReporte(){
 	})
 	.done(function(response){
 		$.each(response.historial, function (index, value) {
-			
-			var fila = "";
 			//limpiar tabla
 			$("#historialReporte tbody tr").remove();
-			
+			//crea la fila
+			var fila = "";
 			fila += "<tr>";
 			fila += "<td>"+value.Fecha+"</td>";
 			fila += "<td>"+value.Estatus+"</td>";
 			fila += "<td>"+value.Descripcion+"</td>";
 			fila += "</tr>";
-			
+			//incluye la fila a la tabla
 			$("#historialReporte").append(fila);
 
 		});
 	});
 	
 }
-
+//consultar imagen del reporte
 function imagenReporte(){
 	"use strict";
 	$.ajax({
@@ -456,18 +481,21 @@ function imagenReporte(){
 		}
 	})
 	.done(function(response){
+		//en caso de obtener una repuesta del servidor, se guarda en un string el codigo del html para luego ser insertado en la pagina
 		if(response.imagen !== ""){
+			//crea el div para la imagen
 			var divImagen = "";
 			divImagen += "<h5>Imagen del bache</h5>";
 			divImagen += "<div class='text-center'>";
 			divImagen += "<img src='"+response.imagen+"' class='img-fluid rounded'>";
 			divImagen += "</div>";
 			divImagen += "<hr>";
+			//lo agrega al html
 			$("#imagenReporte").html(divImagen);
 		}
 	});
 }
-
+//cargar comentario del ciudadano sobre el reporte
 function comentarioReporte(){
 	"use strict";
 	$.ajax({
@@ -480,6 +508,7 @@ function comentarioReporte(){
 		}
 	})
 	.done(function(response){
+		//en caso de obtener una repuesta del servidor, se guarda en un string el codigo del html para luego ser insertado en la pagina
 		if(response.comentario !== ""){
 			var divComentario = "";
 			divComentario += "<h5>Comentario referente al reporte</h5>";
@@ -491,13 +520,15 @@ function comentarioReporte(){
 	});
 	
 }
-
+//puede aceptar 1 o mas valores
+//se utiliza para modificar el estatus (registrar avance del reporte o reportes) o para eliminar reporte o reportes
 function llenarVariables(idReportesSeleccionados){
 	"use strict";
 	idReportes = idReportesSeleccionados;
 	//srcImagen = srcImagen;
 }
 
+//eliminar reporte
 $("#eliminarReporte").click(function() {
 	"use strict";
 	$.ajax({
@@ -507,12 +538,9 @@ $("#eliminarReporte").click(function() {
 		data: {
 			opcion: "eliminarReportes",
 			idReportes: idReportes
-			//srcImagen: srcImagen
 		}
 	})
 	.done(function(response) {
-		//console.log(response);
-		//console.log(response.success);
 		//una vez que se elimine, vuelve a llamar a toda la pagina
 		if(response.success === true){
 			alert("Se ha eliminado el reporte con exito.");

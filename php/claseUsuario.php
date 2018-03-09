@@ -4,6 +4,7 @@ require_once("claseBD.php");
 
 class claseUsuario
 {
+    //variables
     public $idUsuario;
     public $idUsuarioDatos;
     public $nombres;
@@ -13,7 +14,7 @@ class claseUsuario
     public $tipoUsuario;
     public $usuario;
     public $BD;
-
+    //constructor
     public function __construct(){
         try{
             $this->BD = new claseBD();
@@ -23,7 +24,7 @@ class claseUsuario
             echo "Ha surgido un error.<br>" . $e->getMessage();
         }
     }
-
+    //getters y setters
     /**
      * @return mixed
      */
@@ -151,12 +152,12 @@ class claseUsuario
     {
         $this->apellidoMaterno = $apellidoMaterno;
     }
-
+    //logearse en el sistema
     public function login($usuario, $contrasena, $mantenerSesion){
         //array de respuesta
         $json_data = array();
         try{
-
+            //encriptacion de la constraseña
             $contrasenaSha = sha1($contrasena);
             //query de autenticacion
             $sentencia="CALL login(:usuario, :contrasena)";
@@ -280,7 +281,7 @@ class claseUsuario
         //regresar json forzado a objeto
         echo json_encode($json_data, JSON_FORCE_OBJECT);
     }
-
+    //consultar la información del usuario, aun no funciona
     public function consultarInformacionUsuario($idUsuario){
         //array que se convertira en json
         $json_data = array();
@@ -350,7 +351,6 @@ class claseUsuario
                 //respuesta
                 //toma el valor que se da de respuesta al execute
                 $rows = $this->BD->commit();
-                //$rows = $insertar->fetch();
                 if($rows){
                     //empieza la transaccion
                     $this->BD->beginTransaction();
@@ -363,7 +363,6 @@ class claseUsuario
                     //respuesta
                     //toma el valor que se da de respuesta al execute
                     $rows = $this->BD->commit();
-                    //$rows = $insertar->fetch();
                     if($rows){
                         //empieza la transaccion
                         $this->BD->beginTransaction();
@@ -376,7 +375,6 @@ class claseUsuario
                         //respuesta
                         //toma el valor que se da de respuesta al execute
                         $rows = $this->BD->commit();
-                        //$rows = $insertar->fetch();
                         if($rows){
                             $json_data['success'] = true;
                             $json_data['mensaje'] = "Datos modificados correctamente";

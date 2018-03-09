@@ -75,7 +75,7 @@ function localizar() {
 //---------------------------------------------------------------------------//
 //CREAR COSAS EN EL MAPA//
 //---------------------------------------------------------------------------//
-//crea marcador apartir del evento de tocar el mapa
+//crea los marcadores en el mapa apartir de las coordenadas de los reportes registrados
 function cargarMarcadores(event){
 	"use strict";
   $.ajax({
@@ -88,7 +88,7 @@ function cargarMarcadores(event){
   })
   .done(function(response){
     var marcadores = [];
-        
+    //crea el objeto marcador de google y lo anexa a un array
     $.each(response.reportes, function (index, value) {
       var marker = new google.maps.Marker({
             position: new google.maps.LatLng(value.Latitud, value.Longitud)
@@ -96,13 +96,13 @@ function cargarMarcadores(event){
       marcadores.push(marker);
     });
 
-    
+    //configuración del cluster
     var config = {
       gridSize: 100,
       //maxZoom: 7,
       imagePath: '../js/GoogleMaps/MarkerClusterer/images/m'
     };
-
+    //agrega el array con los marcadores al mapa
     var markerCluster = new MarkerClusterer(map, marcadores, config);
   });
 }

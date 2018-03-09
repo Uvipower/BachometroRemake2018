@@ -1,62 +1,61 @@
-//cuando se da click en el boton de iniciar sesion
-$("#iniciarSesion").click(function() {
-	//"use strict";
-	//envia formulario
-
-	$("#login").validate({	
-		rules: {
-			usuario: "required",
-			contrasena: "required"
-		},
-		messages: {
-			usuario: "Debe introducir su usuario.",
-			contrasena: "Debe introducir su contraseña."
-		},
-		submitHandler: function() {
-			$.ajax({
-					//php encargada de hacer la consulta del usuario
-					url: 'php/controladorUsuario.php',
-					type: 'post',
-					dataType: 'json',
-					//variables
-					//envio de los campos
-					data: {
-						"opcion": "login",
-						"usuario": $("#usuario").val(),
-						"contrasena": $("#contrasena").val(),
-						"mantenerSesion": $("#mantenerSesion").val()
-					}
-					//$("#login").serialize()
-				})
-				.done(function(response) {
-					//redirecciiona a la pagina del tipo de usuario
-					if (response.success === true) {
-						window.location.href = "v2/index.php";
-						//$(location).attr('href', "empleados/index.php");
-					}
-					else {
-						$("#respuestaServidor").html(
-							$("<div>", {
-								'class': 'alert alert-danger',
-								'role': 'alert',
-								'text': response.mensaje
-							}).show().fadeIn('slow')
-						);
-					}
-				})
-				.fail(function() {
-					//si falla la conexion
+//validación del formulario
+$("#login").validate({	
+	//reglas
+	rules: {
+		usuario: "required",
+		contrasena: "required"
+	},
+	//mensajes que apareceran abajo del input
+	messages: {
+		usuario: "Debe introducir su usuario.",
+		contrasena: "Debe introducir su contraseña."
+	},
+	//al enviar el formulario
+	submitHandler: function() {
+		$.ajax({
+				//php encargada de hacer la consulta del usuario
+				url: 'php/controladorUsuario.php',
+				type: 'post',
+				dataType: 'json',
+				//variables
+				//envio de los campos
+				data: {
+					"opcion": "login",
+					"usuario": $("#usuario").val(),
+					"contrasena": $("#contrasena").val(),
+					"mantenerSesion": $("#mantenerSesion").val()
+				}
+			})
+			.done(function(response) {
+				//redirecciiona a la pagina del tipo de usuario
+				if (response.success === true) {
+					window.location.href = "v2/index.php";
+				}
+				//muestra alerta
+				else {
 					$("#respuestaServidor").html(
 						$("<div>", {
 							'class': 'alert alert-danger',
 							'role': 'alert',
-							'text': "Problemas al conectar, intente más tarde"
+							'text': response.mensaje
 						}).show().fadeIn('slow')
 					);
-				});
-		}
-	});
+				}
+			})
+			.fail(function() {
+				//si falla la conexion
+				$("#respuestaServidor").html(
+					$("<div>", {
+						'class': 'alert alert-danger',
+						'role': 'alert',
+						'text': "Problemas al conectar, intente más tarde"
+					}).show().fadeIn('slow')
+				);
+			});
+	}
 });
+
+//ver contraseña escrita codigo que vino con la plantilla sb-admin
 $(function() {
 	$("input[type='password'][data-eye]").each(function(i) {
 		var $this = $(this);
@@ -94,70 +93,59 @@ $(function() {
 		});
 	});
 });
+
 //falta validar los datos
-/*
-$("#registrarse").click(function() {
-	"use strict";
-	$("#formRegistro").validate({
-		rules: {
-			apellido_paterno: "required",
-			apellido_materno: "required",
-			nombres: "required",
-			user_registro: "required",
-			correo: {
-				required: true,
-				email: true
-			},
-			password_registro: "required",
-			password2_registro: {
-				equalTo: "#password_registro"
-			}
+$("#formRegistro").validate({
+	//reglas
+	rules: {
+		apellidoPaterno: "required",
+		apellidoMaterno: "required",
+		nombres: "required",
+		usuarioRegistro: "required",
+		correoElectronico: {
+			required: true,
+			email: true
 		},
-		messages: {
-			apellido_paterno: "Debe introducir su apellido paterno.",
-			apellido_materno: "Debe introducir su apellido materno.",
-			nombres: "Debe introducir su nombre.",
-			user_registro: "Debe introducir usuario.",
-			password_registro: "Debe introducir contraseña .",
-			correo: "Debe introducir correo valido.",
-			password2_registro: "Ambas contraseñas deben coincidir"
-		},
-		submitHandler: function() {
-			$("#registrarse").attr("disabled", true);
-			//conexión asincrona
-			$.ajax({
-					url: 'php/registros.php',
-					type: 'post',
-					//dataType: 'html',
-					//variables
-					data: $("#form_registro").serialize()
-				})
-				.done(function(data) {
-					$("#registrarse").attr("disabled", false);
-					//$("#alerta_registro").attr("hidden", false);
-					//$("#alerta_registro_servidor").html(data);
-					/*
-					setTimeout(function (){
-						$("#alerta_registro").attr("hidden", true);
-						$("#registro").click();
-					},3000);
-					*/
-				    //$("#alerta_registro").attr("hidden", true);
-/*
-					console.log(data);
-				})
-				.fail(function() {
-					//si falla el registro
-					/*
-					$("#registrarse").attr("disabled", false);
-					$("#alerta_registro").attr("hidden", false);
-					$("#alerta_registro_servidor").html('Favor de intentar más tarde');
-					//$("#alerta_registro").attr("hidden", true);
-					*/
-/*
-				    console.log("error");
-				});
+		confirmarContrasena1: "required",
+		confirmarContrasena: {
+			equalTo: "#confirmarContrasena1"
 		}
-	});
+	},
+	//mensajes que apareceran abajo del input
+	messages: {
+		apellidoPaterno: "Debe introducir su apellido paterno.",
+		apellidoMaterno: "Debe introducir su apellido materno.",
+		nombres: "Debe introducir su nombre.",
+		usuarioRegistro: "Debe introducir usuario.",
+		correoElectronico: "Debe introducir correo valido.",
+		confirmarContrasena1: "Debe introducir contraseña .",
+		confirmarContrasena: "Ambas contraseñas deben coincidir"
+	},
+	//al enviar el formulario
+	submitHandler: function() {
+		//conexión asincrona
+		$.ajax({
+				url: 'php/controladorUsuario.php',
+				type: 'post',
+				dataType: 'json',
+				//variables
+				data: {
+					"opcion": "registro",
+					"apellidoPaterno": $("#apellidoPaterno").val(),	
+					"apellidoMaterno": $("#apellidoMaterno").val(),
+					"nombres": $("#nombres").val(),
+					"usuario": $("#usuarioRegistro").val(),
+					"correoElectronico": $("#correoElectronico").val(),
+					"confirmarContrasena1": $("#confirmarContrasena1").val(),
+					"confirmarContrasena": $("#confirmarContrasena").val()
+				}
+			})
+			.done(function(data) {
+				alert(data);
+				console.log(data);
+			})
+			.fail(function() {
+			    console.log("error");
+			});
+	}
 });
-*/

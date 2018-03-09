@@ -8,11 +8,11 @@
     <link rel="shortcut icon" type="image/png" href="img/favicon.ico"/>
 	<title>Bachometro &copy; Municipio de Othón P. Blanco &mdash; 2018</title>
   <!-- Bootstrap core CSS-->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
   <!-- Custom fonts for this template-->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/sb-admin.css"/>
 </head>
 
 <body class="bg-dark">
@@ -20,8 +20,8 @@
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">Registrar una cuenta</div>
       <div class="card-body">
-        <form>
-			<div class="form-group">
+        <form id="formRegistro">
+			    <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
                 <label for="apellidoPaterno">Apellido paterno</label>
@@ -44,8 +44,8 @@
           <div class="form-group">
 		    <div class="form-row">
               <div class="col-md-6">
-			    <label for="usuario">Usuario</label>
-				<input class="form-control" id="usuario" type="text" aria-describedby="userHelp" placeholder="Introduce tu usuario" data-error="El usuario es es invalido" required/>
+			    <label for="usuarioRegistro">Usuario</label>
+				<input class="form-control" id="usuarioRegistro" type="text" aria-describedby="userHelp" placeholder="Introduce tu usuario" data-error="El usuario es es invalido" required/>
 			  </div>
             </div>
 			<div class="form-row">
@@ -67,22 +67,25 @@
               </div>
             </div>
           </div>
-          <a class="btn btn-primary btn-block" id="registroUsuario" href="#">Registro</a>
+          <button type="submit" class="btn btn-primary btn-block" id="registroUsuario">
+            Registro
+          </button>
         </form>
         <div class="text-center">
 			<div class="d-block small mt-3">
-			¿Ya tienes una cuenta? <a href="login.html">Acceder</a>
+			¿Ya tienes una cuenta? <a href="index.html">Acceder</a>
 			</div>
           	<a class="d-block small" href="forgotPassword.html">¿Olvidó su contraseña?</a>
-        </div>
+      </div>
       </div>
     </div>
   </div>
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="js/jquery-3.1.1.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/jquery.validate.js"></script>
+  <script src="js/additional-methods.js"></script>
+  <script src="js/login.js"></script>
 </body>
 
 </html>

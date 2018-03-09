@@ -5,6 +5,7 @@
 require("claseBD.php");
 
 class claseReporte {
+    //variables
     public $idReporte;
     public $fechaDelReporte;
     public $latitud;
@@ -17,6 +18,7 @@ class claseReporte {
 
     public $BD;
 
+    //constructor
     public function __construct(){
         try{
             $this->BD = new claseBD();
@@ -26,6 +28,9 @@ class claseReporte {
             echo "Ha surgido un error.<br>" . $e->getMessage();
         }
     }
+
+    //getters y setters
+
     /**
      * @return mixed
      */
@@ -170,12 +175,12 @@ class claseReporte {
         $this->comentarioCiudadano = $comentarioCiudadano;
     }
 
+    //registrar reporte
     public function registrarReporte($latitud, $longitud, $referencia, $descripcion, $nombreArchivo){
         //array de respuesta
         $json_data = array();
         try {
             //obtener fecha y hora del servidor
-            //$x= strtotime(date('Y-m-d'));
             $fechaHoraServidor = date('Y-m-d');
             //empieza la transaccion
             $this->BD->beginTransaction();
@@ -240,17 +245,14 @@ class claseReporte {
 			$idUsuario = $_SESSION['id'];
 			$tipoUsuario = $_SESSION['tipoUsuario'];
 			$query = "";
+            //consulta de los baches registrados
+            //aqui se distingue que tipo de usuario es y que informacion va a retornar
 			if($tipoUsuario == 1){
 				$query = "select r.Id_reporte, r.Fecha, r.Referencia, r.Comentario, rh.Estatus, rh.Fecha as Fecha2 from reportes r inner join reporte_historial rh on (r.Id_reporte=rh.Id_reporte) inner join (select MAX(Id_reporte_historial) Id_reporte_historial from reporte_historial group by Id_reporte) tmp on (rh.Id_reporte_historial=tmp.Id_reporte_historial)";
-				//echo $query;
 			}
 			else{
 				$query = "select r.Id_reporte, r.Fecha, r.Referencia, r.Comentario, rh.Estatus, rh.Fecha as Fecha2 from reportes r inner join reporte_historial rh on (r.Id_reporte=rh.Id_reporte) inner join (select MAX(Id_reporte_historial) Id_reporte_historial from reporte_historial group by Id_reporte) tmp on (rh.Id_reporte_historial=tmp.Id_reporte_historial) where r.Id_usuario = ?";
-				//echo $query;
 			}
-			//echo $query;
-            //consulta de los baches registrados
-            //$sentencia="CALL consultarReportes(?)";
             //preparar datos ha insertar
             $consulta = $this->BD->prepare($query);
             //ejecuta e inserta variables
@@ -292,16 +294,13 @@ class claseReporte {
             $idUsuario = $_SESSION['id'];
             $tipoUsuario = $_SESSION['tipoUsuario'];
             $query = "";
+            //consulta de los baches registrados
             if($tipoUsuario == 1){
                 $query = "select Latitud, Longitud from reportes r";
-                //echo $query;
             }
             else{
                 $query = "select Latitud, Longitud from reportes r where r.Id_usuario = ?";
-                //echo $query;
             }
-            //consulta de los baches registrados
-            //$sentencia="CALL consultarReportes(?)";
             //preparar datos ha insertar
             $consulta = $this->BD->prepare($query);
             //ejecuta e inserta variables
@@ -333,6 +332,8 @@ class claseReporte {
         //regresar json forzado a objeto
         echo json_encode($json_data, JSON_FORCE_OBJECT);
     }
+
+    //esta de prueba aun
 
     public function consultarClusterers2(){
         
@@ -342,16 +343,13 @@ class claseReporte {
             $idUsuario = $_SESSION['id'];
             $tipoUsuario = $_SESSION['tipoUsuario'];
             $query = "";
+            //consulta de los baches registrados
             if($tipoUsuario == 1){
                 $query = "select r.Id_reporte, r.Fecha, r.Referencia, r.Comentario, r.Imagen rh.Estatus, rh.Fecha as Fecha2 from reportes r inner join reporte_historial rh on (r.Id_reporte=rh.Id_reporte) inner join (select MAX(Id_reporte_historial) Id_reporte_historial from reporte_historial group by Id_reporte) tmp on (rh.Id_reporte_historial=tmp.Id_reporte_historial)";
-                //echo $query;
             }
             else{
                 $query = "select r.Id_reporte, r.Fecha, r.Referencia, r.Comentario, r.Imagen rh.Estatus, rh.Fecha as Fecha2 from reportes r inner join reporte_historial rh on (r.Id_reporte=rh.Id_reporte) inner join (select MAX(Id_reporte_historial) Id_reporte_historial from reporte_historial group by Id_reporte) tmp on (rh.Id_reporte_historial=tmp.Id_reporte_historial) where r.Id_usuario = ?";
-                //echo $query;
             }
-            //consulta de los baches registrados
-            //$sentencia="CALL consultarReportes(?)";
             //preparar datos ha insertar
             $consulta = $this->BD->prepare($query);
             //ejecuta e inserta variables
@@ -384,17 +382,15 @@ class claseReporte {
         echo json_encode($json_data, JSON_FORCE_OBJECT);
     }
 
+    //consultar las coordenadas del reporte
 	public function coordenadasReporte($idReporte){
 		
         $json_data = array();
 		
         try {
-			
+			//query apra consultar las coordenadas del reporte
 			$query = "select Latitud, Longitud from reportes r where r.Id_reporte = ?";
 			
-			//echo $query;
-            //consulta de los baches registrados
-            //$sentencia="CALL consultarReportes(?)";
             //preparar datos ha insertar
             $consulta = $this->BD->prepare($query);
             //ejecuta e inserta variables
@@ -422,18 +418,16 @@ class claseReporte {
         //regresar json forzado a objeto
         echo json_encode($json_data, JSON_FORCE_OBJECT);
     }
+
+    //consultar el src de la imagen del reporte
 	
 	public function imagenReporte($idReporte){
 		
         $json_data = array();
 		
         try {
-			
+			//query de busqueda del src de la imagen del reporte
 			$query = "select Imagen from reportes r where r.Id_reporte = ?";
-			
-			//echo $query;
-            //consulta de los baches registrados
-            //$sentencia="CALL consultarReportes(?)";
             //preparar datos ha insertar
             $consulta = $this->BD->prepare($query);
             //ejecuta e inserta variables
@@ -459,11 +453,14 @@ class claseReporte {
         echo json_encode($json_data, JSON_FORCE_OBJECT);
     }
 	
+
+    //consultar el historial de avance del reporte
     public function historialReporte($idReporte){
         $json_data = array();
         try{
+            //query de busqueda
             $query = "select Fecha, Descripcion, Estatus from reporte_historial where Id_reporte = ? order by Id_reporte_historial desc";
-            //$sentencia = "CALL consultarReporteDetalles(?)";
+            //prepara los datos
             $consulta = $this->BD->prepare($query);
             //ejeculta e inserta variables
             $consulta->execute(array($idReporte));
@@ -489,11 +486,13 @@ class claseReporte {
         echo json_encode($json_data, JSON_FORCE_OBJECT);
     }
 
+    //consulta el comentario del ciudadano sobre el reporte
     public function comentarioReporte($idReporte){
         $json_data = array();
         try{
+            //query de consulta
             $query = "select Comentario from reportes r where r.Id_reporte = ?";
-            //$sentencia = "CALL consultarReporteDetalles(?)";
+            //prepara los datos
             $consulta = $this->BD->prepare($query);
             //ejeculta e inserta variables
             $consulta->execute(array($idReporte));
@@ -519,13 +518,12 @@ class claseReporte {
         echo json_encode($json_data, JSON_FORCE_OBJECT);
     }
 
+    //eliminar reporte o reportes
     public function eliminarReportes($idReportes){
         $json_data = array();
         try {
 			$idUsuario = $_SESSION['id'];
-            //eliminacion del reporte
-            
-
+            //eliminacion del reporte o reportes
             for($i = 0; $i < count($idReportes); $i++){
                 //empieza la transaccion
                 $this->BD->beginTransaction();

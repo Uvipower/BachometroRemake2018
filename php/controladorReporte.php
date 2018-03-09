@@ -1,14 +1,13 @@
 <?php
-
+//INICIA SESIONES ACTIVAS
 session_start();
-
+//INCLUIR LA CLASE NECESARIA
 require("claseReporte.php");
-
+//OPCION TOMADA POR POST
 $opcion = $_POST['opcion'];
-//$idUsuario = $_SESSION['id'];
-
+//CREACION DEL OBJETO
 $reporte = new claseReporte();
-
+//SWITCH DE POSIBLES
 switch ($opcion){
     case "consultarReportes":
         $reporte->consultarReportes();
@@ -40,8 +39,9 @@ switch ($opcion){
         $descripcion            = $_POST['descripcion'];
         $carpeta                = "../reportes/";
         $direccionArchivo       = "";
-
+        //si cargaron imagen
         if(!empty($_FILES['imagen'])){
+            //cambia el nombre de la imagen por el folio del reporte y la guarda en la carpeta reportes
             $nombreImagen = $_FILES['imagen']['name'];
             $tmpArchivo = $_FILES['imagen']['tmp_name'];
             $direccionArchivo = $carpeta.$nombreImagen;

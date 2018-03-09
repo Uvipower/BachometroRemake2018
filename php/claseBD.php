@@ -4,10 +4,11 @@ require("conexion.php");
 
 class claseBD extends PDO
 {
+    //varuables
     private $user 	  = "root";
     private $pass 	  = "";
     private $conexion = "";
-
+    //constructor
     public function __construct(){
         try{
             //indicar moto y base de datos

@@ -33,7 +33,8 @@ if (isset($_COOKIE['id']) or (isset($_SESSION['id']) and (($_SESSION['tipoUsuari
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">Bachometro</a>
+    <img src="../img/logo.png" width="42" height="30" class="d-inline-block align-top">
+    <a class="navbar-brand" href="index.php">Bachometro</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -181,11 +182,6 @@ if (isset($_COOKIE['id']) or (isset($_SESSION['id']) and (($_SESSION['tipoUsuari
         					<th>Comentario</th>
               		<th>Estatus actual</th>
               		<th>Fecha estatus</th>
-        					<!--
-                  <th class="text-center">Acciones</th>
-        					
-        					<th>Borrar</th>
-        					-->
         				</tr>
               </tfoot>
               <tbody>
